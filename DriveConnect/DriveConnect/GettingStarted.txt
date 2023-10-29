@@ -1,34 +1,50 @@
-Welcome to Xamarin.Forms! Here are some tips to get started building your app.
+HOW TO USE THE APP
 
-Building Your App UI
---------------------
+1. Open the project
+2. Open the files DriveConnect/Helpers/Settings.cs
+3. Replace "YOUR APP ID" by your app id
 
-XAML Hot Reload quickly applies UI changes as you make them to your running app.
-This is the most productive way to preview and iteratively create your UI.
+The application is ready to use
 
-Try it out:
+HOW TO REPRODUCE THE POSSIBLE LEAK
+A. Find data related to the issue reported
+1. Open the path of the application : 'SystemAppPath' => C:\Users\--USER NAME--\AppData\Local\Packages\0614a212-e66b-484d-b95d-ecc9ad029c4e_se31rmdjfzbp6
+2. Replace --USER NAME-- by the name of the user session
+3. Save the path of the file SystemAppPath\LocalState\DriveIntemsInfo.txt (Replace 'SystemAppPath' by his real value, confer 1)
 
-1. Run the app by clicking the Start Debugging (play) button in the above toolbar. 
-2. Open <MainProject>\Views\AboutPage.xaml.
-   Don't stop the app - keep it running while making changes.
-3. Change something! Hint: change the Accent color on line 14 from "#96d1ff" to "Pink".
-4. Watch the About screen update on the device or emulator, with the logo background now pink.
+B. Connect to an account
+1. Launch the application
+2. Sign with your personal or professional account
 
-Keep going and try more changes!
 
-QuickStart Guide
-----------------
+C. Save the reference of the file
+1. One sign in, choice the type 'My drive' or 'Company Drive'. In case you make the second choice, choice a sharepoint's group or a site
+2. Activate the multiple selection switch
+3. Select one or multiple files
+4. Confirm the selection
 
-Learn more of the fundamentals for building apps with Xamarin here: https://aka.ms/xamarin-quickstart
+At this point the file SystemAppPath\LocalState\DriveIntemsInfo.txt will be created
+The file will contains information of the driveitem. The information are related to those specified in DriveConnect/OneDriveClass/DriveItemInfo.cs
 
-Your App Shell
---------------
+D. Evaluate to the possible data leak
+1. Open the file SystemAppPath\LocalState\DriveIntemsInfo.txt
+2. Find the downloadurl of one of the file selected
+3. Open a web browser in private mode
+4. Copy paste the link
+5. The file can be downloaded.
 
-This template uses Shell, an app container that reduces the complexity of your apps by providing fundamental features including:
+REASON WE THINK IS A POSSIBLE DATA LEAK
+- From our point of view, as soon as a pirate get the download url of any type of file, the file can be downloaded and used.
+- For expert, the download url can be retreave by malwares, software like wireshark or any similar software when well configured.
+- If a company store this data without encryption in database, and the download url is capture by pirate, the data will be used
 
-- A single place to describe the app's visual hierarchy.
-- Common navigation such as a flyout menu and tabs.
-- A URI-based navigation scheme that permits navigation to any page in the application.
-- An integrated search handler.
+LIMITATION OF THE POSSIBLE DATA LEAK
+The moment we found the download url cannot be used anymore is when both of the below conditions are fullfilled
+1. The access token of the user session is expired
+2. The user connect again using the application
 
-Open AppShell.xaml to begin exploring. To learn more about Shell visit: https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell/introduction
+Which could mean that the download url is update in microsoft server. But we are not sure.
+
+PROPOSITION FOR THE DATA LEAK
+Associate the access token for a verification of the user before the file can be downloaded.
+
