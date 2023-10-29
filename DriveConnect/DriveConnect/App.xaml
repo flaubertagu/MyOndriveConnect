@@ -1,32 +1,499 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="DriveConnect.App">
+             x:Class="DriveConnect.App"
+             xmlns:converters="clr-namespace:DriveConnect.Converters">
     <!--
         Define global resources and styles here, that apply to all pages in your app.
     -->
     <Application.Resources>
         <ResourceDictionary>
-            <Color x:Key="Primary">#2196F3</Color>
-            <Style TargetType="Button">
-                <Setter Property="TextColor" Value="White"></Setter>
+            <!--#region region Colors -->
+            <Color x:Key="DarkBackground">#160D0C</Color>
+            <Color x:Key="DarkBackgroundSecond">#332322</Color>
+            <Color x:Key="DarkBorderColor">#836A67</Color>
+            <Color x:Key="DarkButtonBorder">#846A67</Color>
+            <Color x:Key="DarkDarkest">#3A2624</Color>
+            <Color x:Key="DarkMedium">#4B3835</Color>
+            <Color x:Key="DarkLight">#937270</Color>
+            <Color x:Key="DarkLightest">#836A67</Color>
+            <Color x:Key="DarkColored">#6B262B</Color>
+            <Color x:Key="DarkTextColor">#FFF9F8</Color>
+
+            <Color x:Key="LightBackground">#FFF9F8</Color>
+            <Color x:Key="LightBackgroundSecond">#F2EAE9</Color>
+            <Color x:Key="LightBorderColor">#CEB8B6</Color>
+            <Color x:Key="LightButtonBorder">#CEB8B6</Color>
+            <Color x:Key="LightDarkest">#A08684</Color>
+            <Color x:Key="LightMedium">#CEB8B6</Color>
+            <Color x:Key="LightLight">#E0B8B5</Color>
+            <Color x:Key="LightLightest">#E8DEDD</Color>
+            <Color x:Key="LightColored">#AA4955</Color>
+            <Color x:Key="LightTextColor">#160D0C</Color>
+
+            <Color x:Key="ColorRed">#931B1E</Color>
+            <Color x:Key="ColorOrange">#B45441</Color>
+            <Color x:Key="ColorGreen">#127E40</Color>
+            <!--#endregion-->
+
+            <!--#region Grid -->
+            <Style x:Key="GridInCollectionView" TargetType="Grid">
+                <Setter Property="Padding" Value="0,5"/>
+                <Setter Property="Margin" Value="0,0,0,5"/>
+            </Style>
+            <Style x:Key="GridInCollectionViewNoPadding" TargetType="Grid">
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Margin" Value="0,0,0,5"/>
+            </Style>
+            <!--#endregion-->
+            
+            <!--#region Frame -->
+            <Style x:Key="ZeroSpacingFrame" TargetType="Frame">
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="CornerRadius" Value="0" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="IsClippedToBounds" Value="True" />
+            </Style>
+
+            <Style x:Key="SpacingZeroRoundFrame" TargetType="Frame">
+                <Setter Property="Padding" Value="5" />
+                <Setter Property="CornerRadius" Value="0" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="IsClippedToBounds" Value="True" />
+            </Style>
+
+            <Style x:Key="ZeroSpacingRoundFrame" TargetType="Frame">
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="CornerRadius" Value="5" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="IsClippedToBounds" Value="True" />
+            </Style>
+
+            <Style x:Key="RoundFrame" TargetType="Frame">
+                <Setter Property="Padding" Value="5" />
+                <Setter Property="CornerRadius" Value="5" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="IsClippedToBounds" Value="True" />
+            </Style>
+            
+            <Style x:Key="FrameSearchBar" TargetType="Frame">
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="CornerRadius" Value="5" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="BorderColor"
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkBorderColor},
+                        Light={StaticResource LightBorderColor}}" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="IsClippedToBounds" Value="True" />
+            </Style>
+            <!--#endregion-->
+            
+            <!--#region SearchBar -->
+            <Style x:Key="CustomSearchBar" TargetType="SearchBar">
+                <Setter Property="BackgroundColor" 
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkDarkest},
+                        Light={StaticResource LightLightest}}" />
+                <Setter Property="PlaceholderColor" 
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}" />
+                <Setter Property="CancelButtonColor" 
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}" />
+                <Setter Property="TextColor" 
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}" />
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontFamily" Value="Orkney_light" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="HorizontalTextAlignment" Value="Start" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+            <!--#endregion-->
+
+            <!--#region Button -->
+            <Style x:Key="Button_Fill_Start_40Height" TargetType="Button">
+                <Setter Property="FontSize" Value="Micro"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}"/>
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+
+            <Style x:Key="ButtonColorless" TargetType="Button">
+                <Setter Property="FontSize" Value="Micro"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="BorderColor"
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkBorderColor},
+                        Light={StaticResource LightBorderColor}}"/>
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}"/>
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+
+            <Style x:Key="Button_D_Medium_L_Light" TargetType="Button">
+                <Setter Property="FontSize" Value="Micro"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BackgroundColor" 
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkMedium},
+                        Light={StaticResource LightLightest}}"/>
+                <Setter Property="BorderColor" Value="Transparent"/>
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}"/>
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+
+            <Style x:Key="Button_D_Light_L_Dark" TargetType="Button">
+                <Setter Property="FontSize" Value="Micro"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BackgroundColor" 
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkLightest},
+                        Light={StaticResource LightDarkest}}"/>
+                <Setter Property="BorderColor" Value="Transparent"/>
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}"/>
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+
+            <Style x:Key="ButtonColorDark" TargetType="Button">
+                <Setter Property="FontSize" Value="Micro"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BackgroundColor"
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkDarkest},
+                        Light={StaticResource LightDarkest}}"/>
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}"/>
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+
+            <Style x:Key="ButtonColorMedium" TargetType="Button">
+                <Setter Property="FontSize" Value="Micro"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BackgroundColor"
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkMedium},
+                        Light={StaticResource LightMedium}}"/>
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}"/>
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+
+            <Style x:Key="ButtonColorLight" TargetType="Button">
+                <Setter Property="FontSize" Value="Micro"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BackgroundColor"
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkLightest},
+                        Light={StaticResource LightLightest}}"/>
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}"/>
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+
+            <Style x:Key="ButtonColorConfirm" TargetType="Button">
+                <Setter Property="FontSize" Value="Micro"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BackgroundColor" 
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkColored},
+                        Light={StaticResource LightColored}}"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+
+            <Style x:Key="ButtonColorRed" TargetType="Button">
+                <Setter Property="FontSize" Value="Micro"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BackgroundColor" 
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkColored},
+                        Light={StaticResource LightColored}}"/>
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}"/>
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+
+            <Style x:Key="ButtonColorGreen" TargetType="Button">
+                <Setter Property="FontSize" Value="Micro"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BackgroundColor" 
+                        Value="{AppThemeBinding
+                        Dark={StaticResource ColorGreen},
+                        Light={StaticResource ColorGreen}}"/>
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}"/>
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+            <!--#endregion-->
+
+            <!--#region Entry -->
+            <Style x:Key="CustomEntry" TargetType="Entry">
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="HorizontalTextAlignment" Value="Start"/>
+                <Setter Property="VerticalTextAlignment" Value="Start"/>
+                <Setter Property="BackgroundColor"
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkBackground},
+                        Light={StaticResource LightBackground}}"/>
+                <Setter Property="PlaceholderColor"
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}"/>
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}"/>
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+            <!--#endregion-->
+
+            <!--#region Label -->
+            <Style x:Key="CustomLabel" TargetType="Label">
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+                <Setter Property="TextColor" 
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}" />
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+
+            <Style x:Key="Align_hStart_vCenter" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+                <Setter Property="HorizontalTextAlignment" Value="Start"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+                <Setter Property="TextColor" 
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}"/>
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+
+            <Style x:Key="Align_hEnd_vCenter" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="End"/>
+                <Setter Property="VerticalOptions" Value="End"/>
+                <Setter Property="HorizontalTextAlignment" Value="Start"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+                <Setter Property="TextColor" 
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}"/>
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+
+            <Style x:Key="CenterAll" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+                <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+                <Setter Property="TextColor" 
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}"/>
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+
+            <Style x:Key="AlignStart" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
+                <Setter Property="HorizontalTextAlignment" Value="Start"/>
+                <Setter Property="VerticalTextAlignment" Value="Start"/>
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+                <Setter Property="TextColor" 
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}"/>
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+
+            <Style x:Key="AlignEnd" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="End"/>
+                <Setter Property="VerticalOptions" Value="End"/>
+                <Setter Property="HorizontalTextAlignment" Value="End"/>
+                <Setter Property="VerticalTextAlignment" Value="End"/>
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+                <Setter Property="TextColor" 
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkTextColor},
+                        Light={StaticResource LightTextColor}}"/>
+                <Setter Property="FontSize" Value="Micro"/>
+            </Style>
+            <!--#endregion-->
+            
+            <!--#region Switch -->
+            <Style x:Key="ToggleSwitch" TargetType="Switch">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="OnColor" 
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkDarkest},
+                        Light={StaticResource LightLightest}}" />
+                <Setter Property="ThumbColor" 
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkLightest},
+                        Light={StaticResource LightDarkest}}" />
+                <Setter Property="HeightRequest" Value="{x:OnPlatform UWP=40,  macOS=40, Android=50, iOS=50}" />
+                <Setter Property="WidthRequest" Value="{x:OnPlatform UWP=40, macOS=40, Android=50, iOS=50}" />
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
                         <VisualStateGroup x:Name="CommonStates">
-                            <VisualState x:Name="Normal">
+                            <VisualState x:Name="ToogleTrue">
                                 <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                    <Setter Property="ThumbColor" 
+                                            Value="{AppThemeBinding
+                                            Dark={StaticResource DarkLightest},
+                                            Light={StaticResource LightDarkest}}" />
                                 </VisualState.Setters>
                             </VisualState>
-                            <VisualState x:Name="Disabled">
+                            <VisualState x:Name="ToogleFalse">
                                 <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="#332196F3" />
+                                    <Setter Property="ThumbColor" 
+                                            Value="{AppThemeBinding
+                                            Dark={StaticResource DarkLightest},
+                                            Light={StaticResource LightDarkest}}" />
                                 </VisualState.Setters>
                             </VisualState>
                         </VisualStateGroup>
                     </VisualStateGroupList>
                 </Setter>
             </Style>
+            <!--#endregion-->
+
+            <Style x:Key="MainAbsoluteLayout" TargetType="AbsoluteLayout">
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+            </Style>
+
+            <Style x:Key="FrameAbsoluteLayoutMain" TargetType="Frame">
+                <Setter Property="AbsoluteLayout.LayoutBounds" Value="0,0,1,1" />
+                <Setter Property="AbsoluteLayout.LayoutFlags" Value="All" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="CornerRadius" Value="0" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="IsClippedToBounds" Value="True" />
+            </Style>
+            
+            <Style x:Key="FrameAbsoluteLayoutSecond" TargetType="Frame">
+                <Setter Property="AbsoluteLayout.LayoutBounds" Value="0.5,0.5,-1,-1" />
+                <Setter Property="AbsoluteLayout.LayoutFlags" Value="PositionProportional" />
+                <Setter Property="Padding" Value="5" />
+                <Setter Property="CornerRadius" Value="5" />
+                <Setter Property="BackgroundColor" 
+                        Value="{AppThemeBinding
+                        Dark={StaticResource DarkLightest},
+                        Light={StaticResource LightLightest}}" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="IsClippedToBounds" Value="True" />
+                <Setter Property="IsVisible" Value="False" />
+            </Style>
+
+            <Style x:Key="PageStyle" TargetType="ContentPage">
+                <Setter Property="BackgroundColor" 
+                        Value="{AppThemeBinding 
+                        Dark={StaticResource DarkBackground}, 
+                        Light={StaticResource LightBackground}}"/>
+                <Setter Property="NavigationPage.HasNavigationBar" Value="False"/>
+                <Setter Property="NavigationPage.HasBackButton" Value="False"/>
+                <!--<Setter Property="Shell.NavBarIsVisible" Value="False"/>
+                <Setter Property="Shell.TabBarIsVisible" Value="False"/>-->
+                <Setter Property="Padding" Value="5"/>
+            </Style>
+            
+            <Style x:Key="CustomCollectionView" TargetType="CollectionView">
+                <Setter Property="VerticalScrollBarVisibility" Value="Never" />
+                <Setter Property="HorizontalScrollBarVisibility" Value="Never" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+            </Style>
+
+            <!--#region Converters -->
+            <converters:ObjectVisibility x:Key="ObjectVisibility"/>
+            <converters:FileExtensionIcon x:Key="FileExtensionIcon"/>
+            <converters:BoolTrueIsFalse x:Key="BoolTrueIsFalse"/>
+            <converters:BoolTrueIsTrue x:Key="BoolTrueIsTrue"/>
+            <converters:DateFormatted x:Key="DateFormatted"/>
+            <!--#endregion-->
+            
         </ResourceDictionary>        
     </Application.Resources>
 </Application>

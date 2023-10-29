@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DriveConnect.Views.OneDriveLogin"
+             xmlns:vm="clr-namespace:DriveConnect.ViewModels"
+             x:DataType="vm:OneDriveConnector"
+             xmlns:views="clr-namespace:DriveConnect.Views"
+             xmlns:renderer="clr-namespace:DriveConnect.ViewRender"
+             x:Name="MyDriveConnect"
+             Style="{StaticResource PageStyle}">
+    <Grid 
+        Padding="5" RowSpacing="5" ColumnDefinitions="*">
+        <Grid RowDefinitions="40,*">
+            <Grid Grid.Row="0" ColumnDefinitions="auto,auto,auto,auto">
+                <renderer:CustomButton 
+                    Grid.Column="0"
+                    Style="{StaticResource ButtonColorConfirm}"
+                    Text="{Binding SignInText}"
+                    Command="{Binding SignInSignOut}" />
+                <renderer:CustomButton 
+                    Grid.Column="1"
+                    Style="{StaticResource Button_D_Medium_L_Light}"
+                    Text="My drive"
+                    FontSize="Small"
+                    Command="{Binding GetMyFolders}"
+                    IsEnabled="{Binding UserHasToken}" />
+                <renderer:CustomButton 
+                    Grid.Column="2"
+                    Style="{StaticResource Button_D_Medium_L_Light}"
+                    Text="Company Drive"
+                    FontSize="Small"
+                    Command="{Binding GetSitesList}"
+                    IsEnabled="{Binding UserHasToken}" />
+            </Grid>
+
+            <Grid
+                Grid.Row="1"
+                IsVisible="{Binding DriveItemListIsVisible}">
+                <views:DrivetItemsView/>
+            </Grid>
+
+            <Grid
+                Grid.Row="1"
+                IsVisible="{Binding FailedMessage, Converter={StaticResource ObjectVisibility}}">
+                <Label Style="{StaticResource CenterAll}"
+                       Text="{Binding FailedMessage}"
+                       FontSize="Title"/>
+            </Grid>
+
+            <Grid
+                Grid.Row="1"
+                IsVisible="{Binding SiteListIsVisible}">
+                <views:SiteListView/>
+            </Grid>
+            
+        </Grid>
+    </Grid>
+</ContentPage>

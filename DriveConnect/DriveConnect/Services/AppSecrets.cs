@@ -7,31 +7,13 @@ namespace DriveConnect.Services
     public static class AppSecrets
     {
         #region OneDrive
-        public static string OneDriveUserId { get; } = "OneDriveUserId";
-        public static string OneDriveUsername { get; } = "OneDriveUsername";
-        public static string OneDrivePassword { get; } = "OneDrivePassword";
+        public static string OneDriveUserInfo { get; } = "OneDriveUserInfo";
 
         #region Check keys
-        public static async Task<bool> CheckOneDriveUserId()
+        public static async Task<bool> CheckOneDriveUserInfo()
         {
-            string UserId = await SecureStorage.GetAsync(OneDriveUserId);
-            if (!string.IsNullOrEmpty(UserId))
-                return true;
-            else
-                return false;
-        }
-        public static async Task<bool> CheckOneDriveUsername()
-        {
-            string Username = await SecureStorage.GetAsync(OneDriveUsername);
-            if (!string.IsNullOrEmpty(Username))
-                return true;
-            else
-                return false;
-        }
-        public static async Task<bool> CheckOneDrivePassword()
-        {
-            string Password = await SecureStorage.GetAsync(OneDrivePassword);
-            if (!string.IsNullOrEmpty(Password))
+            string info = await SecureStorage.GetAsync(OneDriveUserInfo);
+            if (!string.IsNullOrEmpty(info))
                 return true;
             else
                 return false;
@@ -39,33 +21,11 @@ namespace DriveConnect.Services
         #endregion
 
         #region Create keys
-        public static async Task CreateOneDriveUserId(string userId)
+        public static async Task CreateOneDriveUserInfo(string info)
         {
             try
             {
-                await SecureStorage.SetAsync(OneDriveUserId, userId);
-            }
-            catch (Exception err)
-            {
-                //await CrashHandler.TrackError(err);
-            }
-        }
-        public static async Task CreateOneDriveUsername(string username)
-        {
-            try
-            {
-                await SecureStorage.SetAsync(OneDriveUsername, username);
-            }
-            catch (Exception err)
-            {
-                //await CrashHandler.TrackError(err);
-            }
-        }
-        public static async Task CreateOneDrivePassword(string password)
-        {
-            try
-            {
-                await SecureStorage.SetAsync(OneDrivePassword, password);
+                await SecureStorage.SetAsync(OneDriveUserInfo, info);
             }
             catch (Exception err)
             {
@@ -75,38 +35,20 @@ namespace DriveConnect.Services
         #endregion
 
         #region Delete keys
-        public static async Task DeleteOneDriveUserId()
+        public static async Task DeleteOneDriveUserInfo()
         {
-            string key = await SecureStorage.GetAsync(OneDriveUserId);
+            bool infoExist = await CheckOneDriveUserInfo();
+            if (!infoExist) return;
+            string key = await SecureStorage.GetAsync(OneDriveUserInfo);
             if (!string.IsNullOrEmpty(key))
-                SecureStorage.Remove(OneDriveUserId);
-        }
-        public static async Task DeleteOneDriveUsername()
-        {
-            string key = await SecureStorage.GetAsync(OneDriveUsername);
-            if (!string.IsNullOrEmpty(key))
-                SecureStorage.Remove(OneDriveUsername);
-        }
-        public static async Task DeleteOneDrivePassword()
-        {
-            string key = await SecureStorage.GetAsync(OneDrivePassword);
-            if (!string.IsNullOrEmpty(key))
-                SecureStorage.Remove(OneDrivePassword);
+                SecureStorage.Remove(OneDriveUserInfo);
         }
         #endregion
 
         #region Get key
-        public static async Task<string> GetOneDriveUserId()
+        public static async Task<string> GetOneDriveUserInfo()
         {
-            return await SecureStorage.GetAsync(OneDriveUserId);
-        }
-        public static async Task<string> GetOneDriveUsername()
-        {
-            return await SecureStorage.GetAsync(OneDriveUsername);
-        }
-        public static async Task<string> GetOneDrivePassword()
-        {
-            return await SecureStorage.GetAsync(OneDrivePassword);
+            return await SecureStorage.GetAsync(OneDriveUserInfo);
         }
         #endregion
 

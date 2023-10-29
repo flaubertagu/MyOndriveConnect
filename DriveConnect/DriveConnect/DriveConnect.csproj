@@ -7,20 +7,121 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\DriveItemResponse.cs" />
+    <Compile Remove="Models\Item.cs" />
+    <Compile Remove="OneDriveClass\DriveGroup.cs" />
+    <Compile Remove="Views\GroupListView.xaml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Views\GroupListView.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Icons\button_next.svg" />
+    <None Remove="Icons\button_reduce.svg" />
+    <None Remove="Icons\file_audio.svg" />
+    <None Remove="Icons\file_excel.svg" />
+    <None Remove="Icons\file_pdf.svg" />
+    <None Remove="Icons\file_picture.svg" />
+    <None Remove="Icons\file_powerpoint.svg" />
+    <None Remove="Icons\file_random.svg" />
+    <None Remove="Icons\file_text.svg" />
+    <None Remove="Icons\file_video.svg" />
+    <None Remove="Icons\file_word.svg" />
+    <None Remove="Icons\folder.svg" />
+    <None Remove="Resources\Fonts\orkney-bold.ttf" />
+    <None Remove="Resources\Fonts\orkney-light.ttf" />
+    <None Remove="Resources\Fonts\orkney-medium.ttf" />
+    <None Remove="Resources\Fonts\orkney-regular.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Fonts\orkney-bold.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\orkney-light.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\orkney-medium.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\orkney-regular.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Graph" Version="5.29.0" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.49.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Resizetizer.NT" Version="0.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="System.Reflection.TypeExtensions" Version="4.7.0" />
+    <PackageReference Include="Xamarin.CommunityToolkit" Version="1.0.3" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2612" />  
     <PackageReference Include="Xamarin.Essentials" Version="1.8.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Views\LoginPage.xaml">
+    <ProjectReference Include="..\..\ShareClass\ShareClass.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SharedImage Include="Icons\button_next.svg">
+      <BaseSize>100,100</BaseSize>
+    </SharedImage>
+    <SharedImage Include="Icons\button_reduce.svg">
+      <BaseSize>100,100</BaseSize>
+    </SharedImage>
+    <SharedImage Include="Icons\file_audio.svg">
+      <BaseSize>200,200</BaseSize>
+    </SharedImage>
+    <SharedImage Include="Icons\file_excel.svg">
+      <BaseSize>200,200</BaseSize>
+    </SharedImage>
+    <SharedImage Include="Icons\file_pdf.svg">
+      <BaseSize>200,200</BaseSize>
+    </SharedImage>
+    <SharedImage Include="Icons\file_picture.svg">
+      <BaseSize>200,200</BaseSize>
+    </SharedImage>
+    <SharedImage Include="Icons\file_powerpoint.svg">
+      <BaseSize>200,200</BaseSize>
+    </SharedImage>
+    <SharedImage Include="Icons\file_random.svg">
+      <BaseSize>200,200</BaseSize>
+    </SharedImage>
+    <SharedImage Include="Icons\file_text.svg">
+      <BaseSize>200,200</BaseSize>
+    </SharedImage>
+    <SharedImage Include="Icons\file_video.svg">
+      <BaseSize>200,200</BaseSize>
+    </SharedImage>
+    <SharedImage Include="Icons\file_word.svg">
+      <BaseSize>200,200</BaseSize>
+    </SharedImage>
+    <SharedImage Include="Icons\folder.svg">
+      <BaseSize>100,100</BaseSize>
+    </SharedImage>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Views\DriveItemsSelected.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\DrivetItemsView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\OneDriveLogin.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\SiteListView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\" />
+    <None Update="Views\DrivetItemsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 </Project>

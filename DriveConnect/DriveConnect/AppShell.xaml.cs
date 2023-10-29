@@ -1,21 +1,16 @@
 ﻿using DriveConnect.Views;
 using System;
-using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace DriveConnect
 {
-    public partial class AppShell : Xamarin.Forms.Shell
+    public partial class AppShell : Shell
     {
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
-        }
-
-        private async void OnMenuItemClicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync("//LoginPage");
+            Routing.RegisterRoute(nameof(OneDriveLogin), typeof(OneDriveLogin));
+            Routing.RegisterRoute(nameof(DriveItemsSelected), typeof(DriveItemsSelected));
         }
     }
 }

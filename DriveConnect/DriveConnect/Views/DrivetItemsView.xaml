@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DriveConnect.Views.DrivetItemsView"
+             xmlns:vm="clr-namespace:DriveConnect.ViewModels"
+             x:DataType="vm:OneDriveConnector"
+             xmlns:drive="clr-namespace:DriveConnect.OneDriveClass"
+             xmlns:renderer="clr-namespace:DriveConnect.ViewRender"
+             x:Name="DriveItemContent">
+    <AbsoluteLayout Grid.Row="0" Grid.Column="1" Style="{StaticResource MainAbsoluteLayout}">
+
+        <Frame Style="{StaticResource FrameAbsoluteLayoutMain}">
+            <Grid RowDefinitions="35,*,auto">
+
+                <Grid Grid.Row="0" ColumnDefinitions="auto,auto,auto,*">
+
+                    <ImageButton
+                        Grid.Column="0"
+                        Aspect="AspectFit"
+                        Source="button_next.png"
+                        Rotation="180"
+                        IsEnabled="{Binding CanPrevious}"
+                        Command="{Binding PreviousNav}"/>
+
+                    <Frame  Grid.Column="1" Style="{StaticResource RoundFrame}"
+                            BackgroundColor="{AppThemeBinding
+                            Dark={StaticResource DarkMedium},
+                            Light={StaticResource LightMedium}}">
+                        <Grid ColumnDefinitions="auto,auto" ColumnSpacing="5">
+                            <Label  Grid.Column="0" Style="{StaticResource Align_hStart_vCenter}"
+                                    Text="{Binding SelectionTypeText}"
+                                    FontFamily="Orkney_regular"
+                                    FontSize="Micro"/>
+
+                            <renderer:CustomSwitch
+                                Grid.Column="1"
+                                Style="{StaticResource ToggleSwitch}"
+                                IsToggled="False"
+                                Toggled="MultipleSelection_Toggled" />
+                        </Grid>
+                    </Frame>
+
+                    <Frame  Grid.Column="2" Style="{StaticResource RoundFrame}"
+                            BackgroundColor="{AppThemeBinding
+                            Dark={StaticResource DarkMedium},
+                            Light={StaticResource LightMedium}}">
+                        <Grid ColumnDefinitions="auto,auto" ColumnSpacing="5">
+                            <Label  Grid.Column="0" Style="{StaticResource Align_hStart_vCenter}"
+                                    Text="Alert on download"
+                                    FontFamily="Orkney_regular"
+                                    FontSize="Micro"/>
+
+                            <renderer:CustomSwitch  Grid.Column="1" x:Name="AlertOnDownload"
+                                                    Style="{StaticResource ToggleSwitch}"
+                                                    Toggled="AlertOnDownload_Toggled" />
+                        </Grid>
+                    </Frame>
+            
+                    <Frame Grid.Column="3" Style="{StaticResource FrameSearchBar}">
+                        <renderer:CustomSearchBar   Style="{StaticResource CustomSearchBar}"
+                                                    IsEnabled="{Binding HasDriveItems}"
+                                                    VerticalOptions="FillAndExpand"
+                                                    Placeholder="Search"
+                                                    Text="{Binding SearchDriveItem, Mode=TwoWay}"
+                                                    FontFamily="Orkney_regular"
+                                                    FontSize="Micro"/>
+                    </Frame>
+                </Grid>
+
+                <Frame Grid.Row="1" Style="{StaticResource ZeroSpacingFrame}">
+                    <CollectionView
+                        ItemsSource="{Binding DriveItems}"
+                        SelectionMode="Single"
+                        SelectionChanged="OnDriveItemSelectionChanged">
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="drive:DriveItem">
+                                <Frame>
+                                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                        <Image  Aspect="AspectFit"
+                                                HeightRequest="40" WidthRequest="40"
+                                                Source="{Binding ItemType,
+                                                Converter={StaticResource FileExtensionIcon}}"/>
+
+                                        <Frame Style="{StaticResource ZeroSpacingFrame}"
+                                               IsVisible="{Binding IsAFile, Converter={StaticResource BoolTrueIsFalse}}">
+                                            <Label  Style="{StaticResource Align_hStart_vCenter}" Text="{Binding Name}"
+                                                    FontFamily="Orkney_regular"
+                                                    FontSize="Small"/>
+                                        </Frame>
+
+                                        <Frame Style="{StaticResource ZeroSpacingFrame}"
+                                               IsVisible="{Binding IsAFile, Converter={StaticResource BoolTrueIsTrue}}">
+                                            <StackLayout Orientation="Vertical">
+                                                <Label  Style="{StaticResource Align_hStart_vCenter}" Text="{Binding Name}"
+                                                        FontFamily="Orkney_regular"
+                                                        FontSize="Small"/>
+
+                                                <Label  Style="{StaticResource Align_hStart_vCenter}"
+                                                        Text="{Binding LastModifiedDateTime, Converter={StaticResource DateFormatted}}"
+                                                        TextColor="{AppThemeBinding 
+                                                        Dark={StaticResource DarkLight},
+                                                        Light={StaticResource LightLight}}"
+                                                        FontFamily="Orkney_regular"
+                                                        FontSize="{OnIdiom Default=12, Phone=10}"/>
+                                            </StackLayout>
+                                        </Frame>
+                                    </StackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Frame>
+
+                <Frame  Grid.Row="2"
+                        Style="{StaticResource RoundFrame}"
+                        BorderColor="{AppThemeBinding
+                        Dark={StaticResource DarkBorderColor},
+                        Light={StaticResource LightBorderColor}}"
+                        IsVisible="{Binding SelectionFrameIsVisible}"
+                        HeightRequest="{Binding SelectionFrameHeigth}">
+                    <Grid RowDefinitions="auto,*,40">
+                        <Grid Grid.Row="0" RowDefinitions="auto,auto">
+                            <Label Grid.Row="0" Style="{StaticResource Align_hStart_vCenter}"
+                                   Text="Selection list"
+                                   FontSize="Medium"/>
+
+                            <BoxView 
+                                Grid.Row="1"
+                                Color="{AppThemeBinding 
+                                Dark={StaticResource DarkTextColor}, 
+                                Light={StaticResource LightTextColor}}"
+                                HeightRequest="2"
+                                VerticalOptions="FillAndExpand"
+                                HorizontalOptions="FillAndExpand" />
+                        </Grid>
+
+                        <CollectionView Grid.Row="1"
+                                        ItemsSource="{Binding SelectedDriveItem}"
+                                        SelectionMode="Single"
+                                        SelectionChanged="RemoveDriveItemSelectionChanged">
+
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="drive:DriveItem">
+                                    <Frame Style="{StaticResource SpacingZeroRoundFrame}">
+                                        <StackLayout Orientation="Vertical" Spacing="3">
+                                            <Label 
+                                                Style="{StaticResource Align_hStart_vCenter}" 
+                                                Text="{Binding Name}" 
+                                                FontFamily="Orkney_regular"
+                                                FontSize="Small"/>
+                                            <Label
+                                                Style="{StaticResource Align_hStart_vCenter}"
+                                                Text="{Binding FolderPath}"
+                                                TextColor="{AppThemeBinding
+                                                Dark={StaticResource DarkLightest},
+                                                Light={StaticResource LightDarkest}}"
+                                                FontFamily="Orkney_regular"
+                                                FontSize="Micro"/>
+                                
+                                        </StackLayout>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                
+                        <renderer:CustomButton
+                            Grid.Row="2" Style="{StaticResource ButtonColorConfirm}"
+                            Text="Confirm"
+                            FontFamily="Orkney_regular"
+                            FontSize="Small"
+                            IsEnabled="{Binding ConfirmSelectionIsEnable}"
+                            Command="{Binding ConfirmSelection}"/>
+                    </Grid>
+                </Frame>
+
+            </Grid>
+        </Frame>
+        
+    </AbsoluteLayout>
+</ContentView>

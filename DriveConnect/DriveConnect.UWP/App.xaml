@@ -4,4 +4,138 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:DriveConnect.UWP">
 
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <!--#region region Colors -->
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <Color x:Key="BackgroundColor">#160D0C</Color>
+                    <Color x:Key="BackgroundSecond">#332322</Color>
+                    <Color x:Key="BorderColor">#836A67</Color>
+                    <Color x:Key="ButtonBorder">#846A67</Color>
+                    <Color x:Key="Darkest">#3A2624</Color>
+                    <Color x:Key="Medium">#4B3835</Color>
+                    <Color x:Key="Light">#937270</Color>
+                    <Color x:Key="Lightest">#836A67</Color>
+                    <Color x:Key="Colored">#491C19</Color>
+                    <Color x:Key="TextColor">#FFF9F8</Color>
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="Light">
+                    <Color x:Key="BackgroundColor">#FFF9F8</Color>
+                    <Color x:Key="BackgroundSecond">#F2EAE9</Color>
+                    <Color x:Key="BorderColor">#CEB8B6</Color>
+                    <Color x:Key="ButtonBorder">#CEB8B6</Color>
+                    <Color x:Key="Darkest">#A08684</Color>
+                    <Color x:Key="Medium">#CEB8B6</Color>
+                    <Color x:Key="Light">#E0B8B5</Color>
+                    <Color x:Key="Lightest">#E8DEDD</Color>
+                    <Color x:Key="Colored">#B35441</Color>
+                    <Color x:Key="TextColor">#160D0C</Color>
+                </ResourceDictionary>
+
+            </ResourceDictionary.ThemeDictionaries>
+
+            <Color x:Key="ColorRed">#931B1E</Color>
+            <Color x:Key="ColorGreen">#127E40</Color>
+            <!--#endregion-->
+
+            <Style x:Key="CustomToggle" TargetType="ToggleSwitch">
+                <Setter Property="Background" Value="{ThemeResource Colored}"/>
+                <Setter Property="BorderBrush" Value="{ThemeResource BorderColor}"/>
+                <Setter Property="Foreground" Value="{ThemeResource Light}"/>
+                <Setter Property="ManipulationMode" Value="System,TranslateX"/>
+                <Setter Property="UseSystemFocusVisuals" Value="True"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToggleSwitch">
+                            <Grid HorizontalAlignment="Center">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="ToggleStates">
+                                        <VisualStateGroup.Transitions>
+                                            <VisualTransition x:Name="DraggingToOnTransition" From="Dragging" GeneratedDuration="0" To="On">
+                                                <Storyboard>
+                                                    <RepositionThemeAnimation   FromHorizontalOffset="{Binding 
+                                                                                TemplateSettings.KnobCurrentToOnOffset, 
+                                                                                RelativeSource={RelativeSource Mode=TemplatedParent}}" 
+                                                                                TargetName="SwitchKnob"/>
+                                                </Storyboard>
+                                            </VisualTransition>
+                                            <VisualTransition x:Name="DraggingToOffTransition" From="Dragging" GeneratedDuration="0" To="Off">
+                                                <Storyboard>
+                                                    <RepositionThemeAnimation   FromHorizontalOffset="{Binding 
+                                                                                TemplateSettings.KnobCurrentToOffOffset, 
+                                                                                RelativeSource={RelativeSource Mode=TemplatedParent}}" 
+                                                                                TargetName="SwitchKnob"/>
+                                                </Storyboard>
+                                            </VisualTransition>
+                                            <VisualTransition x:Name="OnToOffTransition" From="On" GeneratedDuration="0" To="Off">
+                                                <Storyboard>
+                                                    <RepositionThemeAnimation   FromHorizontalOffset="{Binding 
+                                                                                TemplateSettings.KnobOnToOffOffset, 
+                                                                                RelativeSource={RelativeSource Mode=TemplatedParent}}" 
+                                                                                TargetName="SwitchKnob"/>
+                                                </Storyboard>
+                                            </VisualTransition>
+                                            <VisualTransition x:Name="OffToOnTransition" From="Off" GeneratedDuration="0" To="On">
+                                                <Storyboard>
+                                                    <RepositionThemeAnimation   FromHorizontalOffset="{Binding 
+                                                                                TemplateSettings.KnobOffToOnOffset, 
+                                                                                RelativeSource={RelativeSource Mode=TemplatedParent}}" 
+                                                                                TargetName="SwitchKnob"/>
+                                                </Storyboard>
+                                            </VisualTransition>
+                                        </VisualStateGroup.Transitions>
+                                        <VisualState x:Name="Dragging"/>
+                                        <VisualState x:Name="Off"/>
+                                        <VisualState x:Name="On">
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="0" To="20" Storyboard.TargetProperty="X"
+                                                                 Storyboard.TargetName="KnobTranslateTransform"/>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity"
+                                                                               Storyboard.TargetName="SwitchKnobBounds">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="1"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity"
+                                                                               Storyboard.TargetName="SwitchKnobOn">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="1"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity"
+                                                                               Storyboard.TargetName="SwitchKnobOff">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="0"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Rectangle x:Name="OuterBorder" Height="22" Width="40" RadiusY="11" RadiusX="11"
+                                           StrokeThickness="1" Stroke="{TemplateBinding BorderBrush}" Fill="{TemplateBinding Background}"/>
+                                <Rectangle x:Name="SwitchKnobBounds" Height="22" Width="40" RadiusY="11" RadiusX="11"
+                                           StrokeThickness="1" Stroke="{ThemeResource BackgroundColor}" Fill="{TemplateBinding Foreground}" Opacity="0"/>
+                                <Grid x:Name="SwitchKnob" Grid.Row="2" HorizontalAlignment="Left" Height="20" Width="20">
+                                    <Grid.RenderTransform>
+                                        <TranslateTransform x:Name="KnobTranslateTransform"/>
+                                    </Grid.RenderTransform>
+                                    <Ellipse x:Name="SwitchKnobOn" Height="10" Width="10"
+                                             Fill="{ThemeResource Colored}" Opacity="0"/>
+                                    <Ellipse x:Name="SwitchKnobOff" Height="10" Width="10"
+                                             Fill="{ThemeResource Lightest}"/>
+                                </Grid>
+                                <Thumb x:Name="SwitchThumb" AutomationProperties.AccessibilityView="Raw">
+                                    <Thumb.Template>
+                                        <ControlTemplate TargetType="Thumb">
+                                            <Rectangle Fill="Transparent"/>
+                                        </ControlTemplate>
+                                    </Thumb.Template>
+                                </Thumb>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            
+        </ResourceDictionary>
+    </Application.Resources>
+    
 </Application>

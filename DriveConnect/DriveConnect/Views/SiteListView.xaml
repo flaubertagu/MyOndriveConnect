@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DriveConnect.Views.SiteListView"
+             xmlns:vm="clr-namespace:DriveConnect.ViewModels"
+             x:DataType="vm:OneDriveConnector"
+             xmlns:drive="clr-namespace:DriveConnect.OneDriveClass">
+    <CollectionView Style="{StaticResource CustomCollectionView}"
+                    ItemsSource="{Binding DriveSiteList}"
+                    SelectionMode="Single"
+                    SelectionChanged="DriveSite_SelectionChanged">
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="drive:DriveSite">
+                <Label 
+                    Style="{StaticResource Align_hStart_vCenter}" 
+                    Text="{Binding DisplayName}"
+                    FontFamily="Orkney_regular"
+                    FontSize="Small"/>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentView>
